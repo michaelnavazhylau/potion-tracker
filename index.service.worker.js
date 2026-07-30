@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1785441321|1657502';
+const CACHE_VERSION = '1785444810|1695262';
 /** @type {string} */
 const CACHE_PREFIX = 'PotionPuzzle-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
