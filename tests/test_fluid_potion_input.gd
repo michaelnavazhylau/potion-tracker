@@ -33,6 +33,20 @@ func _run() -> void:
 		quit(1)
 		return
 
+	var browser_mouse := InputEventMouseButton.new()
+	browser_mouse.button_index = MOUSE_BUTTON_LEFT
+	browser_mouse.pressed = true
+	browser_mouse.device = InputEvent.DEVICE_ID_MOUSE
+	potion._on_hit_area_input_event(root, browser_mouse, 0)
+
+	if _press_count != 1:
+		push_error(
+			"A mouse-like browser follow-up after touch must be ignored."
+		)
+		quit(1)
+		return
+
+	potion._suppress_mouse_until_msec = 0
 	var physical_mouse := InputEventMouseButton.new()
 	physical_mouse.button_index = MOUSE_BUTTON_LEFT
 	physical_mouse.pressed = true

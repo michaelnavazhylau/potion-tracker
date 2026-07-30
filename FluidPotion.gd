@@ -7,6 +7,7 @@ signal potion_pressed(potion: FluidPotion)
 
 
 const CAPACITY := 4
+const TOUCH_MOUSE_SUPPRESSION_MSEC := 500
 const CORK_REST_POSITION := Vector2(90.0, 30.0)
 const CORK_DROP_DISTANCE := 24.0
 const LIQUID_COLOR_PARAMETERS := [
@@ -44,6 +45,7 @@ var _fill_amount := 0.0
 var _displayed_colors: Array[PotionColors.PotionColor] = []
 var _fill_tween: Tween
 var _cork_tween: Tween
+var _suppress_mouse_until_msec := 0
 
 
 func _ready() -> void:
@@ -130,13 +132,21 @@ func _on_hit_area_input_event(
 	var was_pressed := false
 
 	if event is InputEventMouseButton:
+		var is_touch_followup := (
+			Time.get_ticks_msec() < _suppress_mouse_until_msec
+		)
 		was_pressed = (
 			event.button_index == MOUSE_BUTTON_LEFT
 			and event.pressed
 			and event.device != InputEvent.DEVICE_ID_EMULATION
+			and not is_touch_followup
 		)
 	elif event is InputEventScreenTouch:
 		was_pressed = event.pressed
+		if was_pressed:
+			_suppress_mouse_until_msec = (
+				Time.get_ticks_msec() + TOUCH_MOUSE_SUPPRESSION_MSEC
+			)
 
 	if not was_pressed:
 		return
