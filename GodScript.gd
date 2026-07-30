@@ -102,6 +102,7 @@ func _layout_potions(viewport_size: Vector2, safe_insets: Vector4) -> void:
 
 func _get_safe_insets(viewport_size: Vector2) -> Vector4:
 	var window_size := Vector2(DisplayServer.window_get_size())
+	var window_position := Vector2(DisplayServer.window_get_position())
 	var safe_area := Rect2(DisplayServer.get_display_safe_area())
 
 	if window_size.x <= 0.0 or window_size.y <= 0.0:
@@ -109,12 +110,19 @@ func _get_safe_insets(viewport_size: Vector2) -> Vector4:
 	if safe_area.size.x <= 0.0 or safe_area.size.y <= 0.0:
 		return Vector4.ZERO
 
+	var window_rect := Rect2(window_position, window_size)
+	var visible_safe_area := safe_area.intersection(window_rect)
+	if visible_safe_area.size.x <= 0.0 or visible_safe_area.size.y <= 0.0:
+		return Vector4.ZERO
+
+	var local_safe_position := visible_safe_area.position - window_position
+	var local_safe_end := visible_safe_area.end - window_position
 	var logical_scale := viewport_size / window_size
 	return Vector4(
-		safe_area.position.x * logical_scale.x,
-		safe_area.position.y * logical_scale.y,
-		(window_size.x - safe_area.end.x) * logical_scale.x,
-		(window_size.y - safe_area.end.y) * logical_scale.y
+		local_safe_position.x * logical_scale.x,
+		local_safe_position.y * logical_scale.y,
+		(window_size.x - local_safe_end.x) * logical_scale.x,
+		(window_size.y - local_safe_end.y) * logical_scale.y
 	)
 
 

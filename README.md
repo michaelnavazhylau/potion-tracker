@@ -7,10 +7,11 @@ selection feedback, and corks that seal completed single-color potions.
 
 [![Potion Puzzle completed solution demo](demos/potion_solution.gif)](demos/potion_solution.mp4)
 
-The demo above automatically plays through a valid solution. Select a filled
-potion, then select a destination. A pour is allowed only when the destination
-is empty or its top color matches the source's top color. Consecutive matching
-layers move together, subject to the destination's remaining capacity.
+The portrait demo above automatically plays through a valid solution using the
+mobile-friendly 2×2 layout. Select a filled potion, then select a destination.
+A pour is allowed only when the destination is empty or its top color matches
+the source's top color. Consecutive matching layers move together, subject to
+the destination's remaining capacity.
 
 ## Run the game
 
@@ -24,13 +25,17 @@ corked potion.
 
 ## Re-record the demo
 
-The deterministic solution driver is in `demos/solution_demo.gd`. Godot's movie
-writer can use it to reproduce the full playthrough:
+The deterministic solution driver is in `demos/solution_demo.gd`. With Godot
+and FFmpeg available, regenerate the portrait AVI, Mac-compatible MP4, and
+autoplaying GIF with:
 
 ```sh
-godot --path . --write-movie demos/potion_solution.avi \
-  --fixed-fps 30 --script demos/solution_demo.gd
+./demos/record_demo.sh
 ```
+
+The script temporarily applies `demos/portrait-recording.cfg`, records at
+720×1280 and 30 FPS, restores the normal responsive project configuration,
+then creates a 720×1280 H.264 MP4 and a 360×640 optimized GIF.
 
 ## Export for the Web
 

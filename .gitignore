@@ -4,6 +4,9 @@
 # Export credentials may contain signing secrets
 export_credentials.cfg
 
+# Temporary project settings used by the demo recorder
+override.cfg
+
 # Mono/C# build artifacts
 .mono/
 data_*/

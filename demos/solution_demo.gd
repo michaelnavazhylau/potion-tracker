@@ -69,7 +69,7 @@ func _create_demo_cursor() -> void:
 
 
 func _click_potion(potion: FluidPotion) -> void:
-	var target_position := potion.position + BOTTLE_CENTER
+	var target_position := potion.position + BOTTLE_CENTER * potion.scale
 	var move_tween := create_tween()
 	move_tween.set_trans(Tween.TRANS_SINE)
 	move_tween.set_ease(Tween.EASE_IN_OUT)
