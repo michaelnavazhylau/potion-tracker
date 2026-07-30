@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://c3jca87k3l750"]
+
+[ext_resource type="Script" uid="uid://uu1mn6c4ci5e" path="res://PotionBottle.gd" id="1_mbnl5"]
+[ext_resource type="Script" uid="uid://cc8tkl78vxs6y" path="res://PotionLiquid.gd" id="2_41u8a"]
+
+[node name="Potion1" type="Node2D" unique_id=806995107]
+script = ExtResource("1_mbnl5")
+
+[node name="Border" type="Node2D" parent="." unique_id=974645560]
+
+[node name="Polygon2D7" type="Polygon2D" parent="Border" unique_id=1281491222]
+position = Vector2(50.00003, 122)
+scale = Vector2(10, 10)
+offset = Vector2(-5.000004, -12.199999)
+polygon = PackedVector2Array(-1, 10, 10.5, 10, 10.5, 11, -1, 11)
+
+[node name="Polygon2D5" type="Polygon2D" parent="Border" unique_id=933287547]
+position = Vector2(353.99997, 178)
+scale = Vector2(10, 10)
+offset = Vector2(-35.399998, -17.8)
+polygon = PackedVector2Array(-1, 0, 0, 0, 0, 11, -1, 11)
+
+[node name="Polygon2D6" type="Polygon2D" parent="Border" unique_id=779777830]
+position = Vector2(465, 178)
+scale = Vector2(10, 10)
+offset = Vector2(-35.399998, -17.8)
+polygon = PackedVector2Array(-1, 0, 0, 0, 0, 11, -1, 11)
+
+[node name="PotionColor1" type="Polygon2D" parent="." unique_id=467461046]
+visible = false
+scale = Vector2(10, 10)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(0, 7.5, 10, 7.5, 10, 10, 0, 10)
+script = ExtResource("2_41u8a")
+
+[node name="PotionColor2" type="Polygon2D" parent="." unique_id=1276071320]
+visible = false
+scale = Vector2(10, 10)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(0, 5, 10, 5, 10, 7.5, 0, 7.5)
+script = ExtResource("2_41u8a")
+
+[node name="PotionColor3" type="Polygon2D" parent="." unique_id=2084342504]
+visible = false
+scale = Vector2(10, 10)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(0, 2.5, 10, 2.5, 10, 5, 0, 5)
+script = ExtResource("2_41u8a")
+
+[node name="PotionColor4" type="Polygon2D" parent="." unique_id=1419012016]
+visible = false
+scale = Vector2(10, 10)
+color = Color(1, 1, 1, 0)
+polygon = PackedVector2Array(0, 0, 10, 0, 10, 2.5, 0, 2.5)
+script = ExtResource("2_41u8a")

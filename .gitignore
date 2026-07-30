@@ -1,0 +1,16 @@
+# Godot 4 generated files
+.godot/
+
+# Export credentials may contain signing secrets
+export_credentials.cfg
+
+# Mono/C# build artifacts
+.mono/
+data_*/
+
+# Platform build output
+android/build/
+
+# OS metadata
+.DS_Store
+Thumbs.db
