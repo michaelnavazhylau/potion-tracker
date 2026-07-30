@@ -17,6 +17,9 @@ shader_parameter/wave_height = 0.012
 shader_parameter/wave_speed = 2.0
 shader_parameter/wave_frequency = 14.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_touch"]
+size = Vector2(204, 294)
+
 [node name="FluidPotion" type="Node2D"]
 script = ExtResource("1_script")
 
@@ -47,5 +50,6 @@ texture = ExtResource("5_cork")
 [node name="HitArea" type="Area2D" parent="."]
 z_index = 4
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitArea"]
-polygon = PackedVector2Array(55, 18, 125, 18, 125, 74, 138, 99, 158, 124, 167, 150, 167, 203, 155, 230, 121, 252, 59, 252, 25, 230, 13, 203, 13, 150, 22, 124, 42, 99, 55, 74)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(90, 135)
+shape = SubResource("RectangleShape2D_touch")
