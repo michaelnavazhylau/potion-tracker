@@ -14,3 +14,6 @@ android/build/
 # OS metadata
 .DS_Store
 Thumbs.db
+
+# Large intermediate movie-writer output; keep the compressed demo formats.
+demos/*.avi

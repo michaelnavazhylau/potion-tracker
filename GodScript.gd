@@ -24,6 +24,9 @@ func _ready() -> void:
 func _on_potion_pressed(potion: FluidPotion) -> void:
 	if _pour_in_progress:
 		return
+	if potion.is_complete():
+		_set_status("That potion is complete and corked.")
+		return
 
 	if _selected_potion == null:
 		if potion.potion_stack.is_empty:
@@ -56,9 +59,15 @@ func _on_potion_pressed(potion: FluidPotion) -> void:
 	))
 	_set_status("Pouring...")
 
-	await get_tree().create_timer(
-		maxf(source_potion.fill_duration, potion.fill_duration)
-	).timeout
+	var transition_duration := maxf(
+		source_potion.fill_duration,
+		potion.fill_duration
+	)
+
+	if potion.is_complete():
+		transition_duration += potion.cork_duration
+
+	await get_tree().create_timer(transition_duration).timeout
 
 	_pour_in_progress = false
 

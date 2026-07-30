@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="80" height="64" viewBox="0 0 80 64"
+     role="img" aria-labelledby="title description">
+  <title id="title">Potion bottle cork</title>
+  <desc id="description">
+    Warm brown tapered cork stopper for the completed potion bottle.
+  </desc>
+
+  <path d="M17 14
+           Q17 8 24 7
+           L56 7
+           Q63 8 63 14
+           L58 53
+           Q57 58 52 58
+           L28 58
+           Q23 58 22 53 Z"
+        fill="#b86f35" stroke="#4a2b1a" stroke-width="5"
+        stroke-linejoin="round"/>
+
+  <ellipse cx="40" cy="13" rx="22" ry="8"
+           fill="#d99550" stroke="#4a2b1a" stroke-width="4"/>
+  <ellipse cx="40" cy="13" rx="15" ry="4"
+           fill="#efb66f"/>
+
+  <path d="M29 25 L27 42 M39 23 L36 52 M52 25 L54 43"
+        fill="none" stroke="#78431f" stroke-width="3"
+        stroke-linecap="round" stroke-opacity="0.75"/>
+  <path d="M25 19 Q39 23 57 18"
+        fill="none" stroke="#e4a25e" stroke-width="2"
+        stroke-linecap="round"/>
+</svg>

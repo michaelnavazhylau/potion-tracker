@@ -11,6 +11,9 @@ Godot shader.
 `FluidPotion.tscn` uses the rendered mask as its liquid sprite texture and
 `potion_fill.gdshader` reveals up to four colored layers from bottom to top.
 
+`potion_cork.svg` is the stopper shown after a potion becomes full and contains
+only one color. `FluidPotion.gd` animates its rendered PNG into the bottle neck.
+
 The PNG files in this folder are deterministic ImageMagick renders of the SVG
 sources at their native 180 x 270 size.
 
@@ -19,4 +22,5 @@ To regenerate them:
 ```sh
 magick -background none potion_bottle_empty.svg -depth 8 potion_bottle_empty.png
 magick -background none potion_bottle_fill_mask.svg -depth 8 potion_bottle_fill_mask.png
+magick -background none potion_cork.svg -depth 8 potion_cork.png
 ```

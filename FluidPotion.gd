@@ -7,6 +7,8 @@ signal potion_pressed(potion: FluidPotion)
 
 
 const CAPACITY := 4
+const CORK_REST_POSITION := Vector2(90.0, 30.0)
+const CORK_DROP_DISTANCE := 24.0
 const LIQUID_COLOR_PARAMETERS := [
 	"layer_color_0",
 	"layer_color_1",
@@ -17,14 +19,17 @@ const LIQUID_COLOR_PARAMETERS := [
 
 @export var initial_colors: Array[PotionColors.PotionColor] = []
 @export_range(0.0, 2.0, 0.05) var fill_duration := 0.45
+@export_range(0.0, 1.0, 0.05) var cork_duration := 0.3
 
 @onready var liquid: Sprite2D = $Liquid
 @onready var bottle_overlay: Sprite2D = $BottleOverlay
 @onready var selection_outline: Sprite2D = $SelectionOutline
+@onready var cork: Sprite2D = $Cork
 @onready var hit_area: Area2D = $HitArea
 
 
 var potion_selected := false
+var corked := false
 var potion_stack: PotionStack
 
 var fill_amount: float:
@@ -38,6 +43,7 @@ var fill_amount: float:
 var _fill_amount := 0.0
 var _displayed_colors: Array[PotionColors.PotionColor] = []
 var _fill_tween: Tween
+var _cork_tween: Tween
 
 
 func _ready() -> void:
@@ -99,8 +105,12 @@ func deselect_potion() -> void:
 
 
 func is_solved() -> bool:
+	return potion_stack.is_empty or is_complete()
+
+
+func is_complete() -> bool:
 	if not potion_stack.is_full:
-		return potion_stack.is_empty
+		return false
 
 	var colors := potion_stack.get_colors()
 	var expected_color: PotionColors.PotionColor = colors.front()
@@ -149,12 +159,17 @@ func _sync_visuals(animated: bool) -> void:
 		_displayed_colors = target_colors
 		_apply_displayed_colors()
 		set_fill_immediately(target_fill)
+		_set_corked(is_complete(), false)
 		return
 
 	if _fill_tween != null and _fill_tween.is_valid():
 		_fill_tween.kill()
 
 	var is_growing := target_fill >= fill_amount
+	var should_cork := is_complete()
+
+	if not should_cork:
+		_set_corked(false, true)
 
 	if is_growing:
 		_displayed_colors = target_colors
@@ -170,11 +185,81 @@ func _sync_visuals(animated: bool) -> void:
 		fill_duration
 	)
 
-	if not is_growing:
-		_fill_tween.finished.connect(func() -> void:
+	_fill_tween.finished.connect(func() -> void:
+		if not is_growing:
 			_displayed_colors = target_colors
 			_apply_displayed_colors()
+
+		if should_cork:
+			_set_corked(true, true)
+	)
+
+
+func _set_corked(should_be_corked: bool, animated: bool) -> void:
+	if _cork_tween != null and _cork_tween.is_valid():
+		_cork_tween.kill()
+
+	corked = should_be_corked
+
+	if not animated or cork_duration <= 0.0:
+		cork.visible = should_be_corked
+		cork.position = CORK_REST_POSITION
+		cork.scale = Vector2.ONE
+		cork.modulate = Color.WHITE
+		return
+
+	if should_be_corked:
+		cork.visible = true
+		cork.position = CORK_REST_POSITION - Vector2(
+			0.0,
+			CORK_DROP_DISTANCE
 		)
+		cork.scale = Vector2(0.88, 0.88)
+		cork.modulate = Color(1.0, 1.0, 1.0, 0.0)
+
+		_cork_tween = create_tween().set_parallel(true)
+		_cork_tween.tween_property(
+			cork,
+			"position",
+			CORK_REST_POSITION,
+			cork_duration
+		).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+		_cork_tween.tween_property(
+			cork,
+			"scale",
+			Vector2.ONE,
+			cork_duration
+		).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		_cork_tween.tween_property(
+			cork,
+			"modulate:a",
+			1.0,
+			cork_duration * 0.5
+		)
+		return
+
+	if not cork.visible:
+		return
+
+	_cork_tween = create_tween().set_parallel(true)
+	_cork_tween.tween_property(
+		cork,
+		"position",
+		CORK_REST_POSITION - Vector2(0.0, CORK_DROP_DISTANCE),
+		cork_duration * 0.6
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	_cork_tween.tween_property(
+		cork,
+		"modulate:a",
+		0.0,
+		cork_duration * 0.45
+	)
+	_cork_tween.chain().tween_callback(func() -> void:
+		cork.visible = false
+		cork.position = CORK_REST_POSITION
+		cork.scale = Vector2.ONE
+		cork.modulate = Color.WHITE
+	)
 
 
 func _apply_displayed_colors() -> void:
