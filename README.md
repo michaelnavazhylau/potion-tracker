@@ -60,3 +60,7 @@ and [their design notes](assets/pwa/README.md).
 The public site is served from the repository's `gh-pages` branch. Generated
 files remain out of `main`; rebuild `build/web` before publishing a new Pages
 release.
+
+## License
+
+Potion Puzzle is open-source software available under the [MIT License](LICENSE).
