@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="180" height="270" viewBox="0 0 180 270"
+     role="img" aria-labelledby="title description">
+  <title id="title">Potion bottle interior mask</title>
+  <desc id="description">
+    White marks the bottle cavity where progressively animated liquid is visible.
+  </desc>
+
+  <!-- Keep this inset from the outline in potion_bottle_empty.svg. -->
+  <path id="liquid-fill-area"
+        d="M69 49 L69 74
+           C69 88 61 98 46 107
+           C29 117 21 132 21 151
+           L21 202
+           C21 226 35 241 60 244
+           L120 244
+           C145 241 159 226 159 202
+           L159 151
+           C159 132 151 117 134 107
+           C119 98 111 88 111 74
+           L111 49 Z"
+        fill="#ffffff"/>
+</svg>
