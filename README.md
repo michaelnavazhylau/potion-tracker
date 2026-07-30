@@ -29,3 +29,23 @@ writer can use it to reproduce the full playthrough:
 godot --path . --write-movie demos/potion_solution.avi \
   --fixed-fps 30 --script demos/solution_demo.gd
 ```
+
+## Export for the Web
+
+The repository includes a single-threaded `Web` preset and uses Godot's
+Compatibility renderer. With the Godot 4.7.1 Web templates installed, create a
+release build with:
+
+```sh
+godot --headless --path . \
+  --export-release Web build/web/index.html
+```
+
+Test the generated files through a local HTTP server:
+
+```sh
+python3 -m http.server 8000 --directory build/web
+```
+
+Then open `http://127.0.0.1:8000`. The generated `build/` directory is ignored
+by Git.

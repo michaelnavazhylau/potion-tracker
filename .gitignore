@@ -10,6 +10,7 @@ data_*/
 
 # Platform build output
 android/build/
+build/
 
 # OS metadata
 .DS_Store
