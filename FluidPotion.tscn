@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://buh1ktog6mjvf"]
+
+[ext_resource type="Script" uid="uid://fwdio3iofwa" path="res://FluidPotion.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bscx1y7vhu30c" path="res://assets/potion_bottle_fill_mask.png" id="2_mask"]
+[ext_resource type="Shader" uid="uid://6yu8ju1cc227" path="res://potion_fill.gdshader" id="3_shader"]
+[ext_resource type="Texture2D" uid="uid://hlmlh585klud" path="res://assets/potion_bottle_empty.png" id="4_bottle"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_liquid"]
+shader = ExtResource("3_shader")
+shader_parameter/fill_amount = 0.0
+shader_parameter/layer_color_0 = Color(0, 0, 0, 0)
+shader_parameter/layer_color_1 = Color(0, 0, 0, 0)
+shader_parameter/layer_color_2 = Color(0, 0, 0, 0)
+shader_parameter/layer_color_3 = Color(0, 0, 0, 0)
+shader_parameter/wave_height = 0.012
+shader_parameter/wave_speed = 2.0
+shader_parameter/wave_frequency = 14.0
+
+[node name="FluidPotion" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Liquid" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_liquid")
+position = Vector2(90, 135)
+texture = ExtResource("2_mask")
+
+[node name="BottleOverlay" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(90, 135)
+texture = ExtResource("4_bottle")
+
+[node name="SelectionOutline" type="Sprite2D" parent="."]
+visible = false
+z_index = 2
+position = Vector2(90, 135)
+scale = Vector2(1.04, 1.04)
+modulate = Color(1, 0.72, 0.16, 0.9)
+texture = ExtResource("4_bottle")
+
+[node name="HitArea" type="Area2D" parent="."]
+z_index = 3
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HitArea"]
+polygon = PackedVector2Array(55, 18, 125, 18, 125, 74, 138, 99, 158, 124, 167, 150, 167, 203, 155, 230, 121, 252, 59, 252, 25, 230, 13, 203, 13, 150, 22, 124, 42, 99, 55, 74)

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="180" height="270" viewBox="0 0 180 270"
+     role="img" aria-labelledby="title description">
+  <title id="title">Empty potion bottle</title>
+  <desc id="description">
+    Transparent glass potion bottle overlay designed to sit above animated liquid.
+  </desc>
+
+  <!-- The cavity is fully transparent so animated liquid remains visible. -->
+  <path id="bottle-glass"
+        d="M61 45 L61 74
+           C61 84 55 91 42 99
+           C22 111 13 129 13 151
+           L13 203
+           C13 232 31 249 59 252
+           L121 252
+           C149 249 167 232 167 203
+           L167 151
+           C167 129 158 111 138 99
+           C125 91 119 84 119 74
+           L119 45 L61 45"
+        fill="none"
+        stroke="#173849" stroke-width="8"
+        stroke-linejoin="round"/>
+  <path d="M61 45 L61 74
+           C61 84 55 91 42 99
+           C22 111 13 129 13 151
+           L13 203
+           C13 232 31 249 59 252
+           L121 252
+           C149 249 167 232 167 203
+           L167 151
+           C167 129 158 111 138 99
+           C125 91 119 84 119 74
+           L119 45 L61 45"
+        fill="none" stroke="#89cedb" stroke-width="4" stroke-opacity="0.9"
+        stroke-linejoin="round"/>
+
+  <!-- Thick lip reads clearly at small game-sprite sizes. -->
+  <rect id="bottle-rim" x="55" y="18" width="70" height="31" rx="9"
+        fill="none"
+        stroke="#173849" stroke-width="8"/>
+  <rect x="55" y="18" width="70" height="31" rx="9"
+        fill="none" stroke="#89cedb" stroke-width="4" opacity="0.9"/>
+  <path d="M62 31 H118" fill="none" stroke="#dff8ff"
+        stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+
+  <!-- Small highlights suggest glass while leaving the center unobstructed. -->
+  <path d="M49 108 C35 117 29 131 29 151 L29 181"
+        fill="none" stroke="#ffffff" stroke-width="7"
+        stroke-linecap="round" opacity="0.56"/>
+  <path d="M40 213 C43 228 54 235 69 237"
+        fill="none" stroke="#dff8ff" stroke-width="5"
+        stroke-linecap="round" opacity="0.34"/>
+  <path d="M145 133 C149 143 150 153 150 166"
+        fill="none" stroke="#72b9ca" stroke-width="4"
+        stroke-linecap="round" opacity="0.25"/>
+</svg>
