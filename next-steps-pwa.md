@@ -32,8 +32,8 @@ manifest and service worker used for installation and offline caching. It also
 notes that production PWAs need a secure HTTPS context and that browser caches
 can still be evicted: [Godot Web export and PWA documentation](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_web.html).
 
-The current `export_presets.cfg` intentionally leaves
-`progressive_web_app/enabled=false` until the correctly sized icons are ready.
+The current `export_presets.cfg` enables PWA output and provisionally uses the
+**Prism Flask** icons. All three logo options and sizes live in `assets/pwa/`.
 
 ## How users install it
 
@@ -62,7 +62,7 @@ installability requirements. See [Google Chrome's web app installation instructi
 
 | Provider | Free option | Fit for this project | Important notes |
 | --- | --- | --- | --- |
-| [GitHub Pages](https://docs.github.com/pages/getting-started-with-github-pages/github-pages-limits) | Yes, for public repositories on GitHub Free | **Recommended for automated, repo-native hosting.** A GitHub Actions workflow can export Godot and publish `build/web`. | Published sites have a 1 GB size limit and a soft 100 GB/month bandwidth limit. HTTPS is included. |
+| [GitHub Pages](https://docs.github.com/pages/getting-started-with-github-pages/github-pages-limits) | Yes, for public repositories on GitHub Free | **Current host.** The generated `build/web` directory is published from the dedicated `gh-pages` branch. | Published sites have a 1 GB size limit and a soft 100 GB/month bandwidth limit. HTTPS is included. |
 | [Netlify](https://www.netlify.com/pricing/) | Yes, with a monthly credit allowance | **Fastest first deployment.** Drag and drop `build/web`, or connect a Git workflow later. | The Free plan includes custom domains, SSL, and CDN delivery; a site can pause when its monthly credits are exhausted. |
 | [Vercel](https://vercel.com/docs/plans/hobby) | Yes, for personal and non-commercial use | Good for Git-based deployments, previews, custom domains, and automatic HTTPS. | Hobby has usage limits and a 100 MB static-file upload limit, which accommodates the current 38 MB WASM file. Commercial use requires a suitable paid plan. See [Vercel limits](https://vercel.com/docs/limits). |
 | [itch.io](https://itch.io/docs/creators/html5) | Yes | Excellent for game discovery and a playable browser page. Upload a ZIP with `index.html` at its root and mark it mobile-friendly. | The game runs in an iframe, so use a dedicated host above when the primary goal is a conventional installable PWA. itch.io is a useful secondary release channel. |
@@ -72,15 +72,15 @@ installability requirements. See [Google Chrome's web app installation instructi
 
 - Use **Netlify** to get the first mobile-test URL online with the fewest moving
   parts.
-- Use **GitHub Pages** for the durable free deployment once a GitHub Actions
-  export-and-publish workflow is added.
+- Use the existing **GitHub Pages** deployment for the durable public URL.
 - Add **itch.io** as a separate discovery page after the direct PWA is working.
 - Choose **Vercel Hobby** instead of Pages or Netlify when its preview-deployment
   workflow is useful and the project remains personal/non-commercial.
 
 ## Deployment automation to add
 
-A future CI workflow should:
+The current release is published from the `gh-pages` branch. A future CI
+workflow can automate these manual steps and should:
 
 1. Check out the repository.
 2. Install the matching Godot release and Web export templates.
@@ -95,11 +95,11 @@ artifact.
 
 ## Release checklist
 
-- [ ] PWA export is enabled in `export_presets.cfg`.
-- [ ] 144x144, 180x180, and 512x512 icons are configured.
-- [ ] The game is served over HTTPS.
-- [ ] The manifest opens without errors in browser developer tools.
-- [ ] The service worker installs and controls the game page.
+- [x] PWA export is enabled in `export_presets.cfg`.
+- [x] 144x144, 180x180, and 512x512 icons are configured.
+- [x] The game is served over HTTPS with GitHub Pages.
+- [x] The manifest opens without errors in browser developer tools.
+- [x] The service worker installs and controls the game page.
 - [ ] The game loads, selects potions, pours, and corks correctly on touch.
 - [ ] A second launch works offline after one complete online load.
 - [ ] Installation works from Safari on a current iPhone/iPad.

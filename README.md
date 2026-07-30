@@ -3,6 +3,8 @@
 A Godot 4 liquid-sorting puzzle with animated fluid levels, constrained pours,
 selection feedback, and corks that seal completed single-color potions.
 
+**[Play or install Potion Puzzle](https://michaelnavazhylau.github.io/potion-tracker/)**
+
 [![Potion Puzzle completed solution demo](demos/potion_solution.gif)](demos/potion_solution.mp4)
 
 The demo above automatically plays through a valid solution. Select a filled
@@ -49,3 +51,12 @@ python3 -m http.server 8000 --directory build/web
 
 Then open `http://127.0.0.1:8000`. The generated `build/` directory is ignored
 by Git.
+
+The Web preset is also configured as an installable PWA with a manifest,
+service worker, offline fallback, standalone display mode, and the provisional
+**Prism Flask** icon. See [the three logo options](assets/pwa/logo-options.png)
+and [their design notes](assets/pwa/README.md).
+
+The public site is served from the repository's `gh-pages` branch. Generated
+files remain out of `main`; rebuild `build/web` before publishing a new Pages
+release.

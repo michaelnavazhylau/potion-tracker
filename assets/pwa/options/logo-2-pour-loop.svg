@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Pour Loop</title>
+  <desc id="desc">Two colorful potion bottles pouring in a playful circular motion.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="72%">
+      <stop stop-color="#214d58"/>
+      <stop offset="1" stop-color="#071c2a"/>
+    </radialGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#64f2df"/>
+      <stop offset="1" stop-color="#22a8ee"/>
+    </linearGradient>
+    <linearGradient id="coral" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffcf65"/>
+      <stop offset="1" stop-color="#ff567f"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#0a2936"/>
+  <path d="M125 292c-16-91 36-169 122-187" fill="none" stroke="#8cefe5" stroke-width="16" stroke-linecap="round" opacity="0.42"/>
+  <path d="M386 220c17 92-35 170-121 188" fill="none" stroke="#ffb667" stroke-width="16" stroke-linecap="round" opacity="0.42"/>
+  <path d="M229 84l25 18-28 13" fill="#8cefe5" opacity="0.62"/>
+  <path d="M283 429l-25-18 28-13" fill="#ffb667" opacity="0.62"/>
+  <g transform="translate(118 119) rotate(-25 91 126)">
+    <path d="M67 68v26c0 13-7 22-25 35-22 16-32 38-32 68 0 48 32 75 81 75s81-27 81-75c0-30-10-52-32-68-18-13-25-22-25-35V68z" fill="#dafbff" fill-opacity="0.14" stroke="#e9feff" stroke-width="13"/>
+    <path d="M21 191c29-15 49 7 77-5 24-10 44-2 63 7v20c-6 33-30 48-70 48-43 0-67-18-70-54z" fill="#36dccc"/>
+    <rect x="59" y="39" width="64" height="38" rx="13" fill="#274b5a" stroke="#e9feff" stroke-width="12"/>
+    <path d="M39 144c-10 13-13 28-11 42" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+  </g>
+  <path d="M270 201c35-4 58 12 76 45 13 24 28 32 48 36" fill="none" stroke="#5be9e0" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="403" cy="285" r="11" fill="#5be9e0"/>
+  <g transform="translate(281 233) rotate(25 62 90)">
+    <path d="M45 48v18c0 10-5 16-18 26-17 12-24 29-24 50 0 35 23 55 59 55s59-20 59-55c0-21-7-38-24-50-13-10-18-16-18-26V48z" fill="#fff3df" fill-opacity="0.15" stroke="#fff7e7" stroke-width="11"/>
+    <path d="M12 138c21-11 36 5 56-4 17-7 32-1 44 5v14c-4 24-22 35-50 35-31 0-48-13-50-39z" fill="#ff6b7f"/>
+    <rect x="39" y="26" width="47" height="29" rx="10" fill="#74463d" stroke="#fff7e7" stroke-width="10"/>
+  </g>
+</svg>
