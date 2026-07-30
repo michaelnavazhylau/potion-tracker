@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Corked Victory</title>
+  <desc id="desc">A completed golden-corked potion framed by a magical starburst.</desc>
+  <defs>
+    <linearGradient id="bg" x1="72" y1="60" x2="446" y2="458" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34235f"/>
+      <stop offset="1" stop-color="#120c2d"/>
+    </linearGradient>
+    <linearGradient id="liquid" x1="170" y1="258" x2="347" y2="423" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a4f65a"/>
+      <stop offset="0.48" stop-color="#30d6ad"/>
+      <stop offset="1" stop-color="#2778e8"/>
+    </linearGradient>
+    <linearGradient id="cork" x1="218" y1="78" x2="292" y2="164" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffd278"/>
+      <stop offset="1" stop-color="#c9792d"/>
+    </linearGradient>
+    <clipPath id="bowl">
+      <path d="M202 190c0 18-8 33-29 49-34 26-49 58-49 97 0 68 47 105 132 105s132-37 132-105c0-39-15-71-49-97-21-16-29-31-29-49z"/>
+    </clipPath>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#1c123e"/>
+  <path d="M256 50l25 72 64-42-8 76 77-4-50 59 69 34-72 25 42 64-76-8 4 77-59-50-34 69-25-72-64 42 8-76-77 4 50-59-69-34 72-25-42-64 76 8-4-77 59 50z" fill="#9a6cff" opacity="0.16"/>
+  <g>
+    <path d="M202 190c0 18-8 33-29 49-34 26-49 58-49 97 0 68 47 105 132 105s132-37 132-105c0-39-15-71-49-97-21-16-29-31-29-49z" fill="#c7efff" fill-opacity="0.12" stroke="#f1faff" stroke-width="17" stroke-linejoin="round"/>
+    <g clip-path="url(#bowl)">
+      <path d="M102 276c42-24 81 11 127-8 54-22 99-2 181 20v172H102z" fill="#38d3a2"/>
+      <rect x="102" y="362" width="308" height="100" fill="#347ee8"/>
+      <path d="M102 276c42-24 81 11 127-8 54-22 99-2 181 20" fill="none" stroke="#e8ffd4" stroke-width="9" stroke-linecap="round" opacity="0.85"/>
+      <circle cx="300" cy="329" r="14" fill="#eaffdc" opacity="0.55"/>
+      <circle cx="335" cy="366" r="8" fill="#ffffff" opacity="0.7"/>
+    </g>
+    <path d="M202 190h108v-58H202z" fill="#2c2755" stroke="#f1faff" stroke-width="17"/>
+    <path d="M214 69h84l-8 94h-68z" fill="#d78a42" stroke="#6a3a20" stroke-width="12" stroke-linejoin="round"/>
+    <ellipse cx="256" cy="72" rx="43" ry="17" fill="#ffd991" stroke="#6a3a20" stroke-width="11"/>
+    <path d="M232 96l-3 43m27-47v55m28-47-4 39" stroke="#9b572b" stroke-width="7" stroke-linecap="round" opacity="0.7"/>
+    <path d="M169 273c-17 22-22 45-18 71" fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" opacity="0.58"/>
+  </g>
+  <g fill="#fff29a">
+    <path d="M407 88l8 23 23 8-23 8-8 23-8-23-23-8 23-8z"/>
+    <path d="M100 110l6 17 17 6-17 6-6 17-6-17-17-6 17-6z"/>
+  </g>
+</svg>

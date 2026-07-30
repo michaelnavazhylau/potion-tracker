@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1c38">
+  <title>Potion Puzzle is offline</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: #0d1c38;
+      color: #effcff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      text-align: center;
+    }
+    main { max-width: 440px; }
+    svg { width: 112px; height: 112px; margin-bottom: 18px; }
+    h1 { margin: 0 0 12px; font-size: clamp(1.8rem, 8vw, 2.5rem); }
+    p { margin: 0; color: #b9dce5; line-height: 1.55; }
+    button {
+      margin-top: 24px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 22px;
+      background: #6c70f7;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <svg viewBox="0 0 112 112" aria-hidden="true">
+      <path d="M44 22v16c0 5-3 9-9 14-10 8-15 18-15 31 0 18 13 27 36 27s36-9 36-27c0-13-5-23-15-31-6-5-9-9-9-14V22z" fill="#20344f" stroke="#d8fbff" stroke-width="5"/>
+      <path d="M24 76c13-7 22 4 35-2 11-5 20-1 29 3v15c-5 10-15 14-32 14-19 0-29-6-32-18z" fill="#6c70f7"/>
+      <rect x="40" y="12" width="32" height="15" rx="6" fill="#294965" stroke="#d8fbff" stroke-width="5"/>
+      <path d="M91 13l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#fff4a8"/>
+    </svg>
+    <h1>The potion needs a signal</h1>
+    <p>Reconnect once to download the latest game files. A previously loaded version should remain playable from its installed Home Screen icon.</p>
+    <button type="button" onclick="location.reload()">Try again</button>
+  </main>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1104" height="430" viewBox="0 0 1104 430"
+     role="img" aria-labelledby="title desc">
+  <title id="title">Potion Puzzle PWA logo options</title>
+  <desc id="desc">Prism Flask, Pour Loop, and Corked Victory shown side by side.</desc>
+  <rect width="1104" height="430" fill="#07111f"/>
+  <image x="28" y="28" width="320" height="320"
+         href="options/logo-1-prism-flask.svg"
+         xlink:href="options/logo-1-prism-flask.svg"/>
+  <image x="392" y="28" width="320" height="320"
+         href="options/logo-2-pour-loop.svg"
+         xlink:href="options/logo-2-pour-loop.svg"/>
+  <image x="756" y="28" width="320" height="320"
+         href="options/logo-3-corked-victory.svg"
+         xlink:href="options/logo-3-corked-victory.svg"/>
+  <g fill="#effcff" font-family="system-ui, sans-serif" font-size="24"
+     font-weight="700" text-anchor="middle">
+    <text x="188" y="395">1 · Prism Flask</text>
+    <text x="552" y="395">2 · Pour Loop</text>
+    <text x="916" y="395">3 · Corked Victory</text>
+  </g>
+</svg>
