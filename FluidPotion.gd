@@ -133,6 +133,7 @@ func _on_hit_area_input_event(
 		was_pressed = (
 			event.button_index == MOUSE_BUTTON_LEFT
 			and event.pressed
+			and event.device != InputEvent.DEVICE_ID_EMULATION
 		)
 	elif event is InputEventScreenTouch:
 		was_pressed = event.pressed
