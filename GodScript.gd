@@ -2,35 +2,64 @@ extends Node2D
 
 
 const BOTTLE_SIZE := Vector2(180.0, 270.0)
+const POTION_SCENE := preload("res://FluidPotion.tscn")
+const PUZZLE_GENERATOR := preload("res://PuzzleGenerator.gd")
 const SIDE_MARGIN := 36.0
 const STATUS_TOP_MARGIN := 24.0
-const STATUS_HEIGHT := 80.0
+const STATUS_HEIGHT := 126.0
 const STATUS_BOARD_GAP := 24.0
 const BOTTOM_MARGIN := 36.0
 const POTION_GAP := 24.0
-const MIN_POTION_SCALE := 0.70
+const MIN_POTION_SCALE := 0.50
 const MAX_POTION_SCALE := 1.0
 
 
-@onready var potions: Array[FluidPotion] = [
-	$Potion1,
-	$Potion2,
-	$Potion3,
-	$Potion4,
-]
+@onready var potions: Array[FluidPotion] = []
 @onready var status_margin: MarginContainer = $UI/StatusMargin
-@onready var status_label: Label = $UI/StatusMargin/StatusPanel/StatusLabel
+@onready var status_label: Label = (
+	$UI/StatusMargin/StatusPanel/StatusContent/StatusLabel
+)
+@onready var reset_button: Button = (
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/ResetButton
+)
+@onready var difficulty_buttons: Array[Button] = [
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/EasyButton,
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/MediumButton,
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/HardButton,
+]
+@onready var new_puzzle_button: Button = (
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/NewPuzzleButton
+)
 
 
 var _selected_potion: FluidPotion
 var _pour_in_progress := false
+var _current_puzzle: Array = []
+var _selected_difficulty := PUZZLE_GENERATOR.Difficulty.EASY
 
 
 func _ready() -> void:
+	for child in get_children():
+		if child is FluidPotion:
+			potions.append(child)
+
 	for potion in potions:
 		potion.potion_pressed.connect(_on_potion_pressed)
 
+	var difficulty_group := ButtonGroup.new()
+	for index in range(difficulty_buttons.size()):
+		var difficulty_button := difficulty_buttons[index]
+		difficulty_button.button_group = difficulty_group
+		difficulty_button.pressed.connect(
+			_on_difficulty_pressed.bind(index)
+		)
+	difficulty_buttons[_selected_difficulty].button_pressed = true
+
+	reset_button.pressed.connect(_on_reset_pressed)
+	new_puzzle_button.pressed.connect(_on_new_puzzle_pressed)
 	get_viewport().size_changed.connect(_apply_responsive_layout)
+
+	_current_puzzle = _capture_current_puzzle()
 	_apply_responsive_layout()
 	_set_status("Select a filled potion, then select its destination.")
 
@@ -53,7 +82,7 @@ func _layout_status(viewport_size: Vector2, safe_insets: Vector4) -> void:
 
 func _layout_potions(viewport_size: Vector2, safe_insets: Vector4) -> void:
 	var is_portrait := viewport_size.x < viewport_size.y
-	var columns := 2 if is_portrait else 4
+	var columns := _get_column_count(is_portrait)
 	var rows := ceili(float(potions.size()) / float(columns))
 	var board_position := Vector2(
 		safe_insets.x + SIDE_MARGIN,
@@ -98,6 +127,17 @@ func _layout_potions(viewport_size: Vector2, safe_insets: Vector4) -> void:
 			float(column) * (scaled_bottle_size.x + POTION_GAP),
 			float(row) * (scaled_bottle_size.y + POTION_GAP)
 		)
+
+
+func _get_column_count(is_portrait: bool) -> int:
+	if is_portrait:
+		if potions.size() <= 4:
+			return 2
+		return 3
+
+	if potions.size() <= 4:
+		return potions.size()
+	return mini(5, potions.size())
 
 
 func _get_safe_insets(viewport_size: Vector2) -> Vector4:
@@ -180,6 +220,78 @@ func _on_potion_pressed(potion: FluidPotion) -> void:
 		_set_status("Solved! Each filled potion contains one color.")
 	else:
 		_set_status("Select the next potion to pour.")
+
+
+func _on_reset_pressed() -> void:
+	if _pour_in_progress:
+		_set_status("Wait for the current pour to finish before resetting.")
+		return
+
+	_load_puzzle(_current_puzzle)
+	_set_status("Puzzle reset. Select a filled potion.")
+
+
+func _on_new_puzzle_pressed() -> void:
+	if _pour_in_progress:
+		_set_status(
+			"Wait for the current pour to finish before starting a new puzzle."
+		)
+		return
+
+	var generated: Dictionary = PUZZLE_GENERATOR.generate(
+		_selected_difficulty
+	)
+	_current_puzzle = _duplicate_puzzle(generated["bottles"])
+	_load_puzzle(_current_puzzle)
+	_set_status(
+		"%s puzzle generated. Select a filled potion."
+		% PUZZLE_GENERATOR.get_difficulty_name(_selected_difficulty)
+	)
+
+
+func _on_difficulty_pressed(difficulty: int) -> void:
+	_selected_difficulty = difficulty
+
+
+func _load_puzzle(bottles: Array) -> void:
+	_clear_selection()
+	_ensure_potion_count(bottles.size())
+
+	for index in range(bottles.size()):
+		var typed_colors: Array[PotionColors.PotionColor] = []
+		for color: int in bottles[index]:
+			typed_colors.append(color as PotionColors.PotionColor)
+		potions[index].load_colors(typed_colors)
+
+	_apply_responsive_layout()
+
+
+func _ensure_potion_count(required_count: int) -> void:
+	while potions.size() > required_count:
+		var removed_potion: FluidPotion = potions.pop_back()
+		remove_child(removed_potion)
+		removed_potion.queue_free()
+
+	while potions.size() < required_count:
+		var potion: FluidPotion = POTION_SCENE.instantiate()
+		potion.name = "Potion%d" % (potions.size() + 1)
+		add_child(potion)
+		potion.potion_pressed.connect(_on_potion_pressed)
+		potions.append(potion)
+
+
+func _capture_current_puzzle() -> Array:
+	var bottles: Array = []
+	for potion in potions:
+		bottles.append(potion.potion_stack.get_colors())
+	return _duplicate_puzzle(bottles)
+
+
+func _duplicate_puzzle(bottles: Array) -> Array:
+	var duplicate: Array = []
+	for bottle: Array in bottles:
+		duplicate.append(bottle.duplicate())
+	return duplicate
 
 
 func _select_potion(potion: FluidPotion) -> void:

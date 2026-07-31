@@ -7,6 +7,9 @@ enum PotionColor {
 	RED,
 	BLUE,
 	YELLOW,
+	PURPLE,
+	CYAN,
+	ORANGE,
 	EMPTY
 }
 
@@ -20,6 +23,12 @@ static func get_color(potion_color: PotionColors.PotionColor) -> Color:
 			return Color.DARK_BLUE
 		PotionColor.YELLOW:
 			return Color.GREEN_YELLOW
+		PotionColor.PURPLE:
+			return Color.MEDIUM_PURPLE
+		PotionColor.CYAN:
+			return Color.DEEP_SKY_BLUE
+		PotionColor.ORANGE:
+			return Color.DARK_ORANGE
 		PotionColor.EMPTY:
 			return Color.TRANSPARENT
 		_:

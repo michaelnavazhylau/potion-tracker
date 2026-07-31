@@ -23,6 +23,17 @@ When a potion becomes full with a single color, a cork drops behind the bottle
 rim and seals it. Solve the puzzle by separating every color into its own full,
 corked potion.
 
+Use **Reset** to restore the current puzzle to its starting state. Choose
+**Easy**, **Medium**, or **Hard**, then press **New Puzzle** to generate a fresh
+solvable board:
+
+- Easy: 3 colors, 4 bottles
+- Medium: 5 colors, 7 bottles
+- Hard: 7 colors, 9 bottles
+
+Higher difficulties also use deeper random scrambles. Puzzle generation works
+fully offline and constructs each board with a guaranteed legal solution.
+
 ## Re-record the demo
 
 The deterministic solution driver is in `demos/solution_demo.gd`. With Godot

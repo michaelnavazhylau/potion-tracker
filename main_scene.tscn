@@ -41,14 +41,18 @@ anchor_right = 1.0
 offset_left = 36.0
 offset_top = 24.0
 offset_right = -36.0
-offset_bottom = 104.0
+offset_bottom = 150.0
 
 [node name="StatusPanel" type="PanelContainer" parent="UI/StatusMargin"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_status")
 
-[node name="StatusLabel" type="Label" parent="UI/StatusMargin/StatusPanel"]
-custom_minimum_size = Vector2(0, 64)
+[node name="StatusContent" type="VBoxContainer" parent="UI/StatusMargin/StatusPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="StatusLabel" type="Label" parent="UI/StatusMargin/StatusPanel/StatusContent"]
+custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.96, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
@@ -59,3 +63,41 @@ text = "Select a filled potion, then select its destination."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+
+[node name="Controls" type="HBoxContainer" parent="UI/StatusMargin/StatusPanel/StatusContent"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ResetButton" type="Button" parent="UI/StatusMargin/StatusPanel/StatusContent/Controls"]
+custom_minimum_size = Vector2(90, 38)
+layout_mode = 2
+text = "Reset"
+tooltip_text = "Restart the current puzzle"
+
+[node name="EasyButton" type="Button" parent="UI/StatusMargin/StatusPanel/StatusContent/Controls"]
+custom_minimum_size = Vector2(72, 38)
+layout_mode = 2
+toggle_mode = true
+text = "Easy"
+tooltip_text = "Use Easy for the next puzzle"
+
+[node name="MediumButton" type="Button" parent="UI/StatusMargin/StatusPanel/StatusContent/Controls"]
+custom_minimum_size = Vector2(84, 38)
+layout_mode = 2
+toggle_mode = true
+text = "Medium"
+tooltip_text = "Use Medium for the next puzzle"
+
+[node name="HardButton" type="Button" parent="UI/StatusMargin/StatusPanel/StatusContent/Controls"]
+custom_minimum_size = Vector2(72, 38)
+layout_mode = 2
+toggle_mode = true
+text = "Hard"
+tooltip_text = "Use Hard for the next puzzle"
+
+[node name="NewPuzzleButton" type="Button" parent="UI/StatusMargin/StatusPanel/StatusContent/Controls"]
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+text = "New Puzzle"
+tooltip_text = "Generate a new solvable puzzle"

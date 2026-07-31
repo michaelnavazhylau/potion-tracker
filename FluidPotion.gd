@@ -106,6 +106,22 @@ func deselect_potion() -> void:
 	selection_outline.visible = false
 
 
+func load_colors(
+	colors: Array[PotionColors.PotionColor],
+	animated := false
+) -> void:
+	assert(colors.size() <= CAPACITY, (
+		"FluidPotion colors exceed its capacity."
+	))
+	if potion_stack == null:
+		initial_colors = colors.duplicate()
+		return
+
+	deselect_potion()
+	potion_stack.load_colors(colors)
+	_sync_visuals(animated)
+
+
 func is_solved() -> bool:
 	return potion_stack.is_empty or is_complete()
 

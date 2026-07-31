@@ -44,6 +44,31 @@ func _run() -> void:
 		_fail("Landscape potions must remain inside the constrained board.")
 		return
 
+	game._on_difficulty_pressed(PuzzleGenerator.Difficulty.HARD)
+	game._on_new_puzzle_pressed()
+	potions.assign(game.potions)
+	game._layout_potions(Vector2(720.0, 1280.0), no_safe_insets)
+	if potions.size() != 9 or not _potions_do_not_overlap(potions):
+		_fail("Hard portrait layout must arrange nine non-overlapping potions.")
+		return
+	if not _potions_fit_bounds(
+		potions,
+		Rect2(36.0, 174.0, 648.0, 1070.0)
+	):
+		_fail("Hard portrait potions must remain inside the board.")
+		return
+
+	game._layout_potions(Vector2(1280.0, 720.0), no_safe_insets)
+	if not _potions_do_not_overlap(potions):
+		_fail("Hard landscape layout must not overlap potions.")
+		return
+	if not _potions_fit_bounds(
+		potions,
+		Rect2(36.0, 174.0, 1208.0, 510.0)
+	):
+		_fail("Hard landscape potions must remain inside the board.")
+		return
+
 	var safe_insets := Vector4(20.0, 30.0, 40.0, 50.0)
 	game._layout_status(Vector2(720.0, 1280.0), safe_insets)
 	var status_margin: MarginContainer = game.get_node("UI/StatusMargin")
@@ -96,8 +121,26 @@ func _potions_fit_bounds(
 		var potion_rect := Rect2(potion.position, size)
 		if not bounds.encloses(potion_rect):
 			return false
-		if potion.scale.x < 0.70 or potion.scale.x > 1.0:
+		if potion.scale.x < 0.50 or potion.scale.x > 1.0:
 			return false
+	return true
+
+
+func _potions_do_not_overlap(potions: Array[FluidPotion]) -> bool:
+	for first_index in range(potions.size()):
+		var first := potions[first_index]
+		var first_rect := Rect2(
+			first.position,
+			Vector2(180.0, 270.0) * first.scale
+		)
+		for second_index in range(first_index + 1, potions.size()):
+			var second := potions[second_index]
+			var second_rect := Rect2(
+				second.position,
+				Vector2(180.0, 270.0) * second.scale
+			)
+			if first_rect.intersects(second_rect):
+				return false
 	return true
 
 
