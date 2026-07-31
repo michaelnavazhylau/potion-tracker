@@ -4,6 +4,11 @@ extends Node2D
 const BOTTLE_SIZE := Vector2(180.0, 270.0)
 const POTION_SCENE := preload("res://FluidPotion.tscn")
 const PUZZLE_GENERATOR := preload("res://PuzzleGenerator.gd")
+const POTION_HIT_RECT := Rect2(
+	Vector2(-12.0, -12.0),
+	Vector2(204.0, 294.0)
+)
+const TOUCH_MOUSE_SUPPRESSION_MSEC := 500
 const SIDE_MARGIN := 36.0
 const STATUS_TOP_MARGIN := 24.0
 const DESKTOP_STATUS_HEIGHT := 126.0
@@ -46,6 +51,7 @@ var _selected_potion: FluidPotion
 var _pour_in_progress := false
 var _current_puzzle: Array = []
 var _selected_difficulty := PUZZLE_GENERATOR.Difficulty.EASY
+var _suppress_mouse_until_msec := 0
 
 
 func _ready() -> void:
@@ -72,6 +78,38 @@ func _ready() -> void:
 	_current_puzzle = _capture_current_puzzle()
 	_apply_responsive_layout()
 	_set_status("Select a filled potion, then select its destination.")
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	var press_position := Vector2.ZERO
+
+	if event is InputEventScreenTouch:
+		if not event.pressed or event.canceled:
+			return
+		press_position = event.position
+		_suppress_mouse_until_msec = (
+			Time.get_ticks_msec() + TOUCH_MOUSE_SUPPRESSION_MSEC
+		)
+	elif event is InputEventMouseButton:
+		if (
+			event.button_index != MOUSE_BUTTON_LEFT
+			or not event.pressed
+			or Time.get_ticks_msec() < _suppress_mouse_until_msec
+		):
+			return
+		press_position = event.position
+	else:
+		return
+
+	for potion in potions:
+		var local_position := (
+			potion.get_global_transform_with_canvas().affine_inverse()
+			* press_position
+		)
+		if POTION_HIT_RECT.has_point(local_position):
+			_on_potion_pressed(potion)
+			get_viewport().set_input_as_handled()
+			return
 
 
 func _apply_responsive_layout() -> void:

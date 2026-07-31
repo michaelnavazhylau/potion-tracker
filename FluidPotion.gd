@@ -7,7 +7,6 @@ signal potion_pressed(potion: FluidPotion)
 
 
 const CAPACITY := 4
-const TOUCH_MOUSE_SUPPRESSION_MSEC := 500
 const CORK_REST_POSITION := Vector2(90.0, 30.0)
 const CORK_DROP_DISTANCE := 24.0
 const LIQUID_COLOR_PARAMETERS := [
@@ -26,9 +25,6 @@ const LIQUID_COLOR_PARAMETERS := [
 @onready var bottle_overlay: Sprite2D = $BottleOverlay
 @onready var selection_outline: Sprite2D = $SelectionOutline
 @onready var cork: Sprite2D = $Cork
-@onready var hit_area: Area2D = $HitArea
-
-
 var potion_selected := false
 var corked := false
 var potion_stack: PotionStack
@@ -45,14 +41,12 @@ var _fill_amount := 0.0
 var _displayed_colors: Array[PotionColors.PotionColor] = []
 var _fill_tween: Tween
 var _cork_tween: Tween
-var _suppress_mouse_until_msec := 0
 
 
 func _ready() -> void:
 	_make_material_unique()
 	_initialize_potion_stack()
 	_sync_visuals(false)
-	hit_area.input_event.connect(_on_hit_area_input_event)
 
 
 func _make_material_unique() -> void:
@@ -138,36 +132,6 @@ func is_complete() -> bool:
 			return false
 
 	return true
-
-
-func _on_hit_area_input_event(
-	_viewport: Node,
-	event: InputEvent,
-	_shape_index: int
-) -> void:
-	var was_pressed := false
-
-	if event is InputEventMouseButton:
-		var is_touch_followup := (
-			Time.get_ticks_msec() < _suppress_mouse_until_msec
-		)
-		was_pressed = (
-			event.button_index == MOUSE_BUTTON_LEFT
-			and event.pressed
-			and not is_touch_followup
-		)
-	elif event is InputEventScreenTouch:
-		was_pressed = event.pressed
-		if was_pressed:
-			_suppress_mouse_until_msec = (
-				Time.get_ticks_msec() + TOUCH_MOUSE_SUPPRESSION_MSEC
-			)
-
-	if not was_pressed:
-		return
-
-	potion_pressed.emit(self)
-	get_viewport().set_input_as_handled()
 
 
 func set_fill_immediately(new_fill_amount: float) -> void:
