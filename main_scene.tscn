@@ -41,7 +41,7 @@ anchor_right = 1.0
 offset_left = 36.0
 offset_top = 24.0
 offset_right = -36.0
-offset_bottom = 150.0
+offset_bottom = 194.0
 
 [node name="StatusPanel" type="PanelContainer" parent="UI/StatusMargin"]
 layout_mode = 2

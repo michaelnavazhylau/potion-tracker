@@ -81,6 +81,25 @@ func _run() -> void:
 	if not is_equal_approx(status_margin.offset_right, -76.0):
 		_fail("Status panel must respect the right safe area.")
 		return
+	if not is_equal_approx(status_margin.offset_bottom, 224.0):
+		_fail("Mobile status panel must make room for larger touch controls.")
+		return
+
+	game._apply_responsive_controls(Vector2(720.0, 1280.0))
+	if not _controls_match_mobile_size(game):
+		_fail("Mobile controls must use readable text and large touch targets.")
+		return
+
+	game._apply_responsive_controls(Vector2(390.0, 844.0))
+	game._layout_status(Vector2(390.0, 844.0), no_safe_insets)
+	if not _controls_fit_compact_width(game, 390.0):
+		_fail("Compact mobile controls must scale without clipping.")
+		return
+
+	game._apply_responsive_controls(Vector2(1280.0, 720.0))
+	if not _controls_match_desktop_size(game):
+		_fail("Desktop controls must return to their compact sizing.")
+		return
 
 	var touch_shape: RectangleShape2D = potions[0].get_node(
 		"HitArea/CollisionShape2D"
@@ -124,6 +143,40 @@ func _potions_fit_bounds(
 		if potion.scale.x < 0.50 or potion.scale.x > 1.0:
 			return false
 	return true
+
+
+func _controls_match_mobile_size(game: Node2D) -> bool:
+	for button: Button in game.control_buttons:
+		if button.custom_minimum_size.y < 72.0:
+			return false
+		if button.get_theme_font_size("font_size") < 24:
+			return false
+	return game.status_label.get_theme_font_size("font_size") >= 26
+
+
+func _controls_match_desktop_size(game: Node2D) -> bool:
+	for button: Button in game.control_buttons:
+		if not is_equal_approx(button.custom_minimum_size.y, 38.0):
+			return false
+		if button.get_theme_font_size("font_size") != 18:
+			return false
+	return game.status_label.get_theme_font_size("font_size") == 22
+
+
+func _controls_fit_compact_width(
+	game: Node2D,
+	viewport_width: float
+) -> bool:
+	var controls_width := 8.0 * float(game.control_buttons.size() - 1)
+	for button: Button in game.control_buttons:
+		controls_width += button.custom_minimum_size.x
+		if button.custom_minimum_size.y < 44.0:
+			return false
+		if button.get_theme_font_size("font_size") < 16:
+			return false
+
+	var available_width := viewport_width - 72.0 - 36.0
+	return controls_width <= available_width + EPSILON
 
 
 func _potions_do_not_overlap(potions: Array[FluidPotion]) -> bool:

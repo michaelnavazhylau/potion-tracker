@@ -58,6 +58,19 @@ func _run() -> void:
 		quit(1)
 		return
 
+	var emulated_mouse_fallback := InputEventMouseButton.new()
+	emulated_mouse_fallback.button_index = MOUSE_BUTTON_LEFT
+	emulated_mouse_fallback.pressed = true
+	emulated_mouse_fallback.device = InputEvent.DEVICE_ID_EMULATION
+	potion._on_hit_area_input_event(root, emulated_mouse_fallback, 0)
+
+	if _press_count != 3:
+		push_error(
+			"An emulated mouse press without a preceding touch must work."
+		)
+		quit(1)
+		return
+
 	potion.queue_free()
 	await process_frame
 

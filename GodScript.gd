@@ -6,12 +6,17 @@ const POTION_SCENE := preload("res://FluidPotion.tscn")
 const PUZZLE_GENERATOR := preload("res://PuzzleGenerator.gd")
 const SIDE_MARGIN := 36.0
 const STATUS_TOP_MARGIN := 24.0
-const STATUS_HEIGHT := 126.0
+const DESKTOP_STATUS_HEIGHT := 126.0
+const MOBILE_UI_BREAKPOINT := 800.0
 const STATUS_BOARD_GAP := 24.0
 const BOTTOM_MARGIN := 36.0
 const POTION_GAP := 24.0
 const MIN_POTION_SCALE := 0.50
 const MAX_POTION_SCALE := 1.0
+const DESKTOP_BUTTON_WIDTHS := [90.0, 72.0, 84.0, 72.0, 140.0]
+const MOBILE_BUTTON_WIDTHS := [92.0, 78.0, 106.0, 78.0, 154.0]
+const CONTROL_GAP := 8.0
+const STATUS_PANEL_HORIZONTAL_PADDING := 36.0
 
 
 @onready var potions: Array[FluidPotion] = []
@@ -22,14 +27,19 @@ const MAX_POTION_SCALE := 1.0
 @onready var reset_button: Button = (
 	$UI/StatusMargin/StatusPanel/StatusContent/Controls/ResetButton
 )
-@onready var difficulty_buttons: Array[Button] = [
+@onready var control_buttons: Array[Button] = [
+	reset_button,
 	$UI/StatusMargin/StatusPanel/StatusContent/Controls/EasyButton,
 	$UI/StatusMargin/StatusPanel/StatusContent/Controls/MediumButton,
 	$UI/StatusMargin/StatusPanel/StatusContent/Controls/HardButton,
+	$UI/StatusMargin/StatusPanel/StatusContent/Controls/NewPuzzleButton,
 ]
-@onready var new_puzzle_button: Button = (
-	$UI/StatusMargin/StatusPanel/StatusContent/Controls/NewPuzzleButton
-)
+@onready var difficulty_buttons: Array[Button] = [
+	control_buttons[1],
+	control_buttons[2],
+	control_buttons[3],
+]
+@onready var new_puzzle_button: Button = control_buttons[4]
 
 
 var _selected_potion: FluidPotion
@@ -67,16 +77,61 @@ func _ready() -> void:
 func _apply_responsive_layout() -> void:
 	var viewport_size := get_viewport_rect().size
 	var safe_insets := _get_safe_insets(viewport_size)
+	_apply_responsive_controls(viewport_size)
 	_layout_status(viewport_size, safe_insets)
 	_layout_potions(viewport_size, safe_insets)
 
 
+func _apply_responsive_controls(viewport_size: Vector2) -> void:
+	var use_mobile_controls := viewport_size.x <= MOBILE_UI_BREAKPOINT
+	var mobile_scale := _get_mobile_control_scale(viewport_size.x)
+	var button_height := (
+		maxf(44.0, 72.0 * mobile_scale)
+		if use_mobile_controls
+		else 38.0
+	)
+	var button_font_size := (
+		maxi(16, roundi(24.0 * mobile_scale))
+		if use_mobile_controls
+		else 18
+	)
+	var button_widths := DESKTOP_BUTTON_WIDTHS
+
+	for index in range(control_buttons.size()):
+		var button_width: float = button_widths[index]
+		if use_mobile_controls:
+			button_width = MOBILE_BUTTON_WIDTHS[index] * mobile_scale
+		control_buttons[index].custom_minimum_size = Vector2(
+			button_width,
+			button_height
+		)
+		control_buttons[index].add_theme_font_size_override(
+			"font_size",
+			button_font_size
+		)
+
+	status_label.custom_minimum_size.y = (
+		maxf(40.0, 54.0 * mobile_scale)
+		if use_mobile_controls
+		else 44.0
+	)
+	status_label.add_theme_font_size_override(
+		"font_size",
+		(
+			maxi(18, roundi(26.0 * mobile_scale))
+			if use_mobile_controls
+			else 22
+		)
+	)
+
+
 func _layout_status(viewport_size: Vector2, safe_insets: Vector4) -> void:
+	var status_height := _get_status_height(viewport_size)
 	status_margin.offset_left = safe_insets.x + SIDE_MARGIN
 	status_margin.offset_top = safe_insets.y + STATUS_TOP_MARGIN
 	status_margin.offset_right = -(safe_insets.z + SIDE_MARGIN)
 	status_margin.offset_bottom = (
-		status_margin.offset_top + STATUS_HEIGHT
+		status_margin.offset_top + status_height
 	)
 
 
@@ -84,9 +139,10 @@ func _layout_potions(viewport_size: Vector2, safe_insets: Vector4) -> void:
 	var is_portrait := viewport_size.x < viewport_size.y
 	var columns := _get_column_count(is_portrait)
 	var rows := ceili(float(potions.size()) / float(columns))
+	var status_height := _get_status_height(viewport_size)
 	var board_position := Vector2(
 		safe_insets.x + SIDE_MARGIN,
-		safe_insets.y + STATUS_TOP_MARGIN + STATUS_HEIGHT
+		safe_insets.y + STATUS_TOP_MARGIN + status_height
 			+ STATUS_BOARD_GAP
 	)
 	var board_size := Vector2(
@@ -127,6 +183,28 @@ func _layout_potions(viewport_size: Vector2, safe_insets: Vector4) -> void:
 			float(column) * (scaled_bottle_size.x + POTION_GAP),
 			float(row) * (scaled_bottle_size.y + POTION_GAP)
 		)
+
+
+func _get_status_height(viewport_size: Vector2) -> float:
+	if viewport_size.x <= MOBILE_UI_BREAKPOINT:
+		var mobile_scale := _get_mobile_control_scale(viewport_size.x)
+		var label_height := maxf(40.0, 54.0 * mobile_scale)
+		var button_height := maxf(44.0, 72.0 * mobile_scale)
+		return label_height + button_height + 44.0
+	return DESKTOP_STATUS_HEIGHT
+
+
+func _get_mobile_control_scale(viewport_width: float) -> float:
+	var available_width := (
+		viewport_width
+		- SIDE_MARGIN * 2.0
+		- STATUS_PANEL_HORIZONTAL_PADDING
+		- CONTROL_GAP * float(control_buttons.size() - 1)
+	)
+	var desired_width := 0.0
+	for button_width: float in MOBILE_BUTTON_WIDTHS:
+		desired_width += button_width
+	return clampf(available_width / desired_width, 0.1, 1.0)
 
 
 func _get_column_count(is_portrait: bool) -> int:
